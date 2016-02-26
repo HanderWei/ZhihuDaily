@@ -11,8 +11,18 @@
         android:background="@color/colorPrimary"
         />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/news_list"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/srl"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tool_bar">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/news_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/spacing_small"
+            />
+    </android.support.v4.widget.SwipeRefreshLayout>
+
 </RelativeLayout>
