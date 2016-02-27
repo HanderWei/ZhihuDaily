@@ -1,11 +1,9 @@
 package me.chen_wei.zhihu.network.processor;
 
-import android.util.Log;
-
 import de.greenrobot.event.EventBus;
+import me.chen_wei.zhihu.Constants;
 import me.chen_wei.zhihu.event.LatestContentLoadedEvent;
 import me.chen_wei.zhihu.event.LoadFailureEvent;
-import me.chen_wei.zhihu.network.Constants;
 import me.chen_wei.zhihu.network.api.ZhihuAPI;
 import me.chen_wei.zhihu.network.model.Latest;
 import retrofit2.Call;
@@ -39,9 +37,8 @@ public class LatestProcessor implements ILatestProcessor{
 
             @Override
             public void onFailure(Call<Latest> call, Throwable t) {
-                Log.d("Test", "failure");
                 //利用EventBus通知Presenter加载失败
-                EventBus.getDefault().post(new LoadFailureEvent("加载失败"));
+                EventBus.getDefault().post(new LoadFailureEvent("最新消息列表加载失败"));
             }
         });
 

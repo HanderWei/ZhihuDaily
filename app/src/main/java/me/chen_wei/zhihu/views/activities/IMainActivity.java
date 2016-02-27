@@ -16,4 +16,7 @@ public interface IMainActivity {
 
     //设置最新新闻列表
     void setLatestStories(List<Latest.StoriesEntity> entities);
+
+    //加载故事页面
+    void gotoStoryActivity(int id);
 }

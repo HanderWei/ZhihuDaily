@@ -12,7 +12,11 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 import me.chen_wei.zhihu.R;
+import me.chen_wei.zhihu.event.LoadContentEvent;
 import me.chen_wei.zhihu.network.model.Latest;
 
 /**
@@ -20,7 +24,7 @@ import me.chen_wei.zhihu.network.model.Latest;
  * <p/>
  * Email : hander_wei@163.com
  */
-public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHolder> {
+public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHolder>{
 
     private List<Latest.StoriesEntity> entities;
     private Context mContext;
@@ -31,15 +35,16 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
+        @Bind(R.id.story_title)
         TextView title;
+        @Bind(R.id.story_img)
         ImageView img;
 
         public ViewHolder(View itemView){
             super(itemView);
-
-            title = (TextView)itemView.findViewById(R.id.story_title);
-            img = (ImageView)itemView.findViewById(R.id.story_img);
+            ButterKnife.bind(this, itemView);
         }
+
     }
 
     @Override
@@ -48,8 +53,16 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
         LayoutInflater inflater = LayoutInflater.from(context);
 
         View storyView = inflater.inflate(R.layout.item_story, parent, false);
+        final ViewHolder vh = new ViewHolder(storyView);
+        storyView.setOnClickListener(new View.OnClickListener(){
 
-        ViewHolder vh = new ViewHolder(storyView);
+            @Override
+            public void onClick(View view) {
+                EventBus.getDefault().post(new LoadContentEvent(entities.get(vh.getLayoutPosition()).getId()));
+            }
+        });
+
+
         return vh;
     }
 

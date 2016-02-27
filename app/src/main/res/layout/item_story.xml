@@ -8,7 +8,8 @@
     app:contentPadding="@dimen/spacing_small"
     android:layout_marginRight="@dimen/spacing_small"
     android:layout_marginLeft="@dimen/spacing_small"
-    android:layout_marginTop="@dimen/spacing_small"
+    android:layout_marginTop="@dimen/spacing_tiny"
+    android:layout_marginBottom="@dimen/spacing_tiny"
     >
 
     <RelativeLayout

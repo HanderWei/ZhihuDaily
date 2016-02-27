@@ -1,5 +1,6 @@
 package me.chen_wei.zhihu.views.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import me.chen_wei.zhihu.Constants;
 import me.chen_wei.zhihu.R;
 import me.chen_wei.zhihu.network.model.Latest;
 import me.chen_wei.zhihu.presenter.MainPresenter;
@@ -41,11 +43,6 @@ public class MainActivity extends AppCompatActivity implements IMainActivity{
         toolbar.setLogo(R.mipmap.ic_launcher);
         setSupportActionBar(toolbar);
 
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
         init();
     }
 
@@ -91,5 +88,12 @@ public class MainActivity extends AppCompatActivity implements IMainActivity{
         StoriesAdapter adapter = new StoriesAdapter(entities, getApplicationContext());
         mNewsList.setAdapter(adapter);
         mNewsList.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    @Override
+    public void gotoStoryActivity(int id) {
+        Intent intent = new Intent(MainActivity.this, StoryActivity.class);
+        intent.putExtra(Constants.KEY_STORY_ID, id);
+        startActivity(intent);
     }
 }
