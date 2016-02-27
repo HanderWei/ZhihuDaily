@@ -33,9 +33,8 @@
             android:layout_toLeftOf="@id/story_img"
             android:layout_marginRight="@dimen/spacing_tiny"
             android:textSize="@dimen/font_large"
-            android:textColor="@color/gray_dark"
+            android:textColor="@color/black"
             android:singleLine="false"
-            tools:text="深夜惊奇：哼哼哈嘿"
             />
     </RelativeLayout>
 </android.support.v7.widget.CardView>

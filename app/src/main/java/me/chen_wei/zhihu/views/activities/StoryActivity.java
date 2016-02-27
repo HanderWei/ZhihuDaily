@@ -3,7 +3,12 @@ package me.chen_wei.zhihu.views.activities;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.webkit.WebView;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -18,6 +23,12 @@ public class StoryActivity extends AppCompatActivity implements IStoryActivity{
     Toolbar toolbar;
     @Bind(R.id.story_content)
     WebView content;
+    @Bind(R.id.tv_news_title)
+    TextView newsTitle;
+    @Bind(R.id.tv_img_source)
+    TextView imgSource;
+    @Bind(R.id.img_news_header)
+    ImageView newsHeader;
 
     StoryPresenter mPresenter;
 
@@ -30,9 +41,12 @@ public class StoryActivity extends AppCompatActivity implements IStoryActivity{
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        content.getSettings().setJavaScriptEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
 
         Bundle bundle = getIntent().getExtras();
         int id = (int) bundle.get(Constants.KEY_STORY_ID);
@@ -44,8 +58,13 @@ public class StoryActivity extends AppCompatActivity implements IStoryActivity{
 
     @Override
     public void setNewsContent(News news) {
+        //Load Html into WebView with CSS
         String htmlData = "<link rel=\"stylesheet\" type=\"text/css\" href=\"zhihu.css\" />" +news.getBody();
         content.loadDataWithBaseURL("file:///android_asset/", htmlData, "text/html", "utf-8", null);
 //        content.loadData(news.getBody(), "text/html", "utf-8");
+
+        newsTitle.setText(news.getTitle());
+        imgSource.setText(news.getImage_source());
+        Picasso.with(this).load(news.getImage()).into(newsHeader);
     }
 }

@@ -5,7 +5,7 @@ package me.chen_wei.zhihu.network.processor;
  * <p/>
  * Email : hander_wei@163.com
  */
-public interface ILatestProcessor {
+public interface IContentsProcessor {
 
-    void getLatestContent();
+    void getContents(int dayOfToday);
 }

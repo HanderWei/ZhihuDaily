@@ -2,7 +2,7 @@ package me.chen_wei.zhihu.views.activities;
 
 import java.util.List;
 
-import me.chen_wei.zhihu.network.model.Latest;
+import me.chen_wei.zhihu.network.model.Contents;
 
 /**
  * Created by Hander on 16/2/26.
@@ -15,7 +15,7 @@ public interface IMainActivity {
     void refresh(boolean flag);
 
     //设置最新新闻列表
-    void setLatestStories(List<Latest.StoriesEntity> entities);
+    void setLatestStories(List<Contents.StoriesEntity> entities);
 
     //加载故事页面
     void gotoStoryActivity(int id);

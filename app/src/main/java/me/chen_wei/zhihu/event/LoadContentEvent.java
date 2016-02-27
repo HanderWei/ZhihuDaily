@@ -9,7 +9,7 @@ public class LoadContentEvent {
 
     public int id;
 
-    public LoadContentEvent(int id){
+    public LoadContentEvent(int id) {
         this.id = id;
     }
 }

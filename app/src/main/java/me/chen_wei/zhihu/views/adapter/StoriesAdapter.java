@@ -17,7 +17,7 @@ import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
 import me.chen_wei.zhihu.R;
 import me.chen_wei.zhihu.event.LoadContentEvent;
-import me.chen_wei.zhihu.network.model.Latest;
+import me.chen_wei.zhihu.network.model.Contents;
 
 /**
  * Created by Hander on 16/2/26.
@@ -26,10 +26,10 @@ import me.chen_wei.zhihu.network.model.Latest;
  */
 public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHolder>{
 
-    private List<Latest.StoriesEntity> entities;
+    private List<Contents.StoriesEntity> entities;
     private Context mContext;
 
-    public StoriesAdapter(List<Latest.StoriesEntity> entities, Context context){
+    public StoriesAdapter(List<Contents.StoriesEntity> entities, Context context){
         this.entities = entities;
         mContext = context;
     }
@@ -68,7 +68,7 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(StoriesAdapter.ViewHolder holder, int position) {
-        Latest.StoriesEntity entity = entities.get(position);
+        Contents.StoriesEntity entity = entities.get(position);
 
         TextView title = holder.title;
         title.setText(entity.getTitle());

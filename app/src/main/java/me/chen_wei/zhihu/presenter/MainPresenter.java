@@ -1,11 +1,11 @@
 package me.chen_wei.zhihu.presenter;
 
 import de.greenrobot.event.EventBus;
-import me.chen_wei.zhihu.event.LatestContentLoadedEvent;
+import me.chen_wei.zhihu.event.ContentsLoadedEvent;
 import me.chen_wei.zhihu.event.LoadContentEvent;
 import me.chen_wei.zhihu.event.LoadFailureEvent;
-import me.chen_wei.zhihu.network.processor.ILatestProcessor;
-import me.chen_wei.zhihu.network.processor.LatestProcessor;
+import me.chen_wei.zhihu.network.processor.IContentsProcessor;
+import me.chen_wei.zhihu.network.processor.ContentsProcessor;
 import me.chen_wei.zhihu.views.activities.IMainActivity;
 
 /**
@@ -16,25 +16,26 @@ import me.chen_wei.zhihu.views.activities.IMainActivity;
 public class MainPresenter {
 
     private IMainActivity mMainActivity;
-    private ILatestProcessor mLatestProcessor;
+    private IContentsProcessor mContentsProcessor;
 
     public MainPresenter(IMainActivity main){
         mMainActivity = main;
-        mLatestProcessor = new LatestProcessor();
+        mContentsProcessor = new ContentsProcessor();
 
         EventBus.getDefault().register(this);
     }
 
-    public void loadLatestContent(){
-        mLatestProcessor.getLatestContent();
+    public void loadContents(int dayOffToday){
+        mMainActivity.refresh(true);
+        mContentsProcessor.getContents(dayOffToday);
     }
 
     public void onEvent(LoadFailureEvent event){
         mMainActivity.refresh(false);
     }
 
-    public void onEvent(LatestContentLoadedEvent event){
-        mMainActivity.setLatestStories(event.latestContent.getStories());
+    public void onEvent(ContentsLoadedEvent event){
+        mMainActivity.setLatestStories(event.contents.getStories());
         mMainActivity.refresh(false);
     }
 

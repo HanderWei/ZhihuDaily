@@ -14,8 +14,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import me.chen_wei.zhihu.Constants;
 import me.chen_wei.zhihu.R;
-import me.chen_wei.zhihu.network.model.Latest;
+import me.chen_wei.zhihu.network.model.Contents;
 import me.chen_wei.zhihu.presenter.MainPresenter;
+import me.chen_wei.zhihu.views.EndlessRecyclerViewScrollListener;
 import me.chen_wei.zhihu.views.adapter.StoriesAdapter;
 
 public class MainActivity extends AppCompatActivity implements IMainActivity{
@@ -40,7 +41,6 @@ public class MainActivity extends AppCompatActivity implements IMainActivity{
 
         ButterKnife.bind(this);
 
-        toolbar.setLogo(R.mipmap.ic_launcher);
         setSupportActionBar(toolbar);
 
         init();
@@ -52,18 +52,27 @@ public class MainActivity extends AppCompatActivity implements IMainActivity{
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
-        srl.post(new Runnable() {
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        mNewsList.setLayoutManager(linearLayoutManager);
+        mNewsList.addOnScrollListener(new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
-            public void run() {
-                srl.setRefreshing(true);
+            public void onLoadMore(int page, int totalItemsCount) {
+
             }
         });
 
         mPresenter = new MainPresenter(this);
 
-        //加载最新的新闻
-        mPresenter.loadLatestContent();
+        //加载当天故事列表
+        mPresenter.loadContents(0);
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        srl.setRefreshing(false);
     }
 
     @Override
@@ -84,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements IMainActivity{
     }
 
     @Override
-    public void setLatestStories(List<Latest.StoriesEntity> entities) {
+    public void setLatestStories(List<Contents.StoriesEntity> entities) {
         StoriesAdapter adapter = new StoriesAdapter(entities, getApplicationContext());
         mNewsList.setAdapter(adapter);
         mNewsList.setLayoutManager(new LinearLayoutManager(this));
