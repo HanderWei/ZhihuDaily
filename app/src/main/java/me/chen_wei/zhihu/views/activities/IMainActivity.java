@@ -3,6 +3,7 @@ package me.chen_wei.zhihu.views.activities;
 import java.util.List;
 
 import me.chen_wei.zhihu.network.model.Contents;
+import me.chen_wei.zhihu.network.model.Latest;
 
 /**
  * Created by Hander on 16/2/26.
@@ -14,9 +15,12 @@ public interface IMainActivity {
     //刷新SwipeRefreshLayout
     void refresh(boolean flag);
 
-    //设置最新新闻列表
-    void setLatestStories(List<Contents.StoriesEntity> entities);
+    //设置文章列表
+    void setContents(List<Contents.StoriesEntity> entities);
 
     //加载故事页面
     void gotoStoryActivity(int id);
+
+    //设置最热文章
+    void setTopStories(Latest latest);
 }

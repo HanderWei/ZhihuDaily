@@ -24,12 +24,12 @@ import me.chen_wei.zhihu.network.model.Contents;
  * <p/>
  * Email : hander_wei@163.com
  */
-public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHolder>{
+public class StoryListAdapter extends RecyclerView.Adapter<StoryListAdapter.ViewHolder>{
 
     private List<Contents.StoriesEntity> entities;
     private Context mContext;
 
-    public StoriesAdapter(List<Contents.StoriesEntity> entities, Context context){
+    public StoryListAdapter(List<Contents.StoriesEntity> entities, Context context){
         this.entities = entities;
         mContext = context;
     }
@@ -67,7 +67,7 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(StoriesAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(StoryListAdapter.ViewHolder holder, int position) {
         Contents.StoriesEntity entity = entities.get(position);
 
         TextView title = holder.title;

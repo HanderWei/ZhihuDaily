@@ -67,4 +67,11 @@ public class StoryActivity extends AppCompatActivity implements IStoryActivity{
         imgSource.setText(news.getImage_source());
         Picasso.with(this).load(news.getImage()).into(newsHeader);
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+        overridePendingTransition(R.anim.hold, android.R.anim.fade_out);
+    }
 }

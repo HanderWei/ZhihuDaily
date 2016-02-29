@@ -8,4 +8,6 @@ package me.chen_wei.zhihu.network.processor;
 public interface IContentsProcessor {
 
     void getContents(int dayOfToday);
+
+    void getTopStories();
 }
