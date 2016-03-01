@@ -1,7 +1,6 @@
 package me.chen_wei.zhihu.network.processor;
 
 import android.content.Context;
-import android.util.Log;
 
 import de.greenrobot.event.EventBus;
 import me.chen_wei.zhihu.Constants;
@@ -43,9 +42,7 @@ public class ContentsProcessor implements IContentsProcessor {
         Contents contents;
         if ((contents = readContentsFromCache(cache, before)) != null) {
             EventBus.getDefault().post(new ContentsLoadedEvent(contents));
-            Log.e("Test", "contents != null");
         } else {
-            Log.e("Test", "contents  == null");
             retrofit = new Retrofit.Builder().baseUrl(Constants.API_URL).addConverterFactory(GsonConverterFactory.create()).build();
 
             ZhihuAPI zhihuAPI = retrofit.create(ZhihuAPI.class);
@@ -102,9 +99,7 @@ public class ContentsProcessor implements IContentsProcessor {
         Latest latest;
         if ((latest = getLatestFromCache(cache)) != null) {
             EventBus.getDefault().post(new TopStoriesLoadedEvent(latest));
-            Log.e("Test", "top != null");
         } else {
-            Log.e("Test", "top == null");
             retrofit = new Retrofit.Builder().baseUrl(Constants.API_URL).addConverterFactory(GsonConverterFactory.create()).build();
 
             ZhihuAPI zhihuAPI = retrofit.create(ZhihuAPI.class);

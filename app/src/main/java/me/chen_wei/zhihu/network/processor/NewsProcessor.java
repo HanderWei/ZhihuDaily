@@ -1,11 +1,11 @@
 package me.chen_wei.zhihu.network.processor;
 
 import android.content.Context;
-import android.util.Log;
 
 import de.greenrobot.event.EventBus;
 import me.chen_wei.zhihu.Constants;
 import me.chen_wei.zhihu.cache.ACache;
+import me.chen_wei.zhihu.event.NewsDownloadedEvent;
 import me.chen_wei.zhihu.event.NewsLoadedEvent;
 import me.chen_wei.zhihu.network.api.ZhihuAPI;
 import me.chen_wei.zhihu.network.model.News;
@@ -36,9 +36,7 @@ public class NewsProcessor implements INewsProcessor {
         News news;
         if ((news = getNewsFromCache(cache, id)) != null) {
             EventBus.getDefault().post(new NewsLoadedEvent(news));
-            Log.e("Test", "news != null");
         } else {
-            Log.e("Test", "mews == null");
             retrofit = new Retrofit.Builder().baseUrl(Constants.API_URL).addConverterFactory(GsonConverterFactory.create()).build();
 
             ZhihuAPI zhihuAPI = retrofit.create(ZhihuAPI.class);
@@ -80,5 +78,38 @@ public class NewsProcessor implements INewsProcessor {
      */
     public void putNewsToCache(ACache cache, int id, News news) {
         cache.put(Integer.toString(id), news, ACache.TIME_DAY * 14);
+    }
+
+    /**
+     * 离线下载文章
+     *
+     * @param context
+     * @param id
+     */
+    @Override
+    public void loadNewsContent(Context context, final int id) {
+        final ACache cache = ACache.get(context);
+        if ((getNewsFromCache(cache, id)) == null) {
+            retrofit = new Retrofit.Builder().baseUrl(Constants.API_URL).addConverterFactory(GsonConverterFactory.create()).build();
+
+            ZhihuAPI zhihuAPI = retrofit.create(ZhihuAPI.class);
+            Call<News> call = zhihuAPI.getNews(id);
+            call.enqueue(new Callback<News>() {
+                @Override
+                public void onResponse(Call<News> call, Response<News> response) {
+                    //加入缓存
+                    putNewsToCache(cache, id, response.body());
+
+                    EventBus.getDefault().post(new NewsDownloadedEvent());
+                }
+
+                @Override
+                public void onFailure(Call<News> call, Throwable t) {
+                    //TODO
+                }
+            });
+        } else {
+            EventBus.getDefault().post(new NewsDownloadedEvent());
+        }
     }
 }

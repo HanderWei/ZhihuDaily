@@ -1,14 +1,18 @@
 package me.chen_wei.zhihu.presenter;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import de.greenrobot.event.EventBus;
+import me.chen_wei.zhihu.R;
+import me.chen_wei.zhihu.event.AllStoriedDownloadedEvent;
 import me.chen_wei.zhihu.event.ContentsLoadedEvent;
 import me.chen_wei.zhihu.event.LoadContentEvent;
 import me.chen_wei.zhihu.event.LoadFailureEvent;
 import me.chen_wei.zhihu.event.TopStoriesLoadedEvent;
 import me.chen_wei.zhihu.network.processor.ContentsProcessor;
 import me.chen_wei.zhihu.network.processor.IContentsProcessor;
+import me.chen_wei.zhihu.network.processor.OfflineDownloadProcessor;
 import me.chen_wei.zhihu.views.activities.IMainActivity;
 
 /**
@@ -49,6 +53,14 @@ public class MainPresenter {
     }
 
     /**
+     * 离线下载
+     */
+    public void offlineDownload() {
+        OfflineDownloadProcessor processor = new OfflineDownloadProcessor(mContext);
+        processor.downloadStories();
+    }
+
+    /**
      * 加载失败
      *
      * @param event
@@ -85,5 +97,11 @@ public class MainPresenter {
      */
     public void onEvent(TopStoriesLoadedEvent event) {
         mMainActivity.setTopStories(event.latest);
+    }
+
+    public void onEvent(AllStoriedDownloadedEvent event) {
+        if (mContext != null) {
+            Toast.makeText(mContext, R.string.download_finish, Toast.LENGTH_LONG).show();
+        }
     }
 }

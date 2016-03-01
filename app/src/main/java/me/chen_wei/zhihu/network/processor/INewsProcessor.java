@@ -16,4 +16,12 @@ public interface INewsProcessor {
      * @param id      文章的唯一ID
      */
     void getNewsContent(Context context, int id);
+
+    /**
+     * 下载文章内容(不显示)
+     *
+     * @param context
+     * @param id
+     */
+    void loadNewsContent(Context context, int id);
 }

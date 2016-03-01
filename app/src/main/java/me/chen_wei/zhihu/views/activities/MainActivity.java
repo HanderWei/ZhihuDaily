@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader;
 import com.zanlabs.widget.infiniteviewpager.InfiniteViewPager;
@@ -176,10 +177,9 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_download:
-                return true;
-            case R.id.action_settings:
-                return true;
-            case R.id.action_day_night_theme:
+                //离线下载
+                Toast.makeText(getApplicationContext(), R.string.start_download, Toast.LENGTH_LONG).show();
+                mPresenter.offlineDownload();
                 return true;
             case R.id.action_about_me:
                 return true;

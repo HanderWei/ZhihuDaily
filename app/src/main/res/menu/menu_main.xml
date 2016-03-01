@@ -8,16 +8,7 @@
         android:title="@string/action_download"
         app:showAsAction="always"
         />
-    <item
-        android:id="@+id/action_settings"
-        android:icon="@drawable/ic_action_settings"
-        android:title="@string/action_settings"
-        app:showAsAction="always"/>
 
-    <item
-        android:id="@+id/action_day_night_theme"
-        android:title="@string/action_day_night_theme"
-        app:showAsAction="never"/>
     <item
         android:id="@+id/action_about_me"
         android:title="@string/action_about_me"
