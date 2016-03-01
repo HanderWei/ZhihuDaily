@@ -27,20 +27,25 @@ public class ContentsProcessor implements IContentsProcessor {
 
     Retrofit retrofit;
 
+    @Override
+    public void getContents(Context context, int dayOfToday) {
+        getContents(context, dayOfToday, false);
+    }
+
     /**
      * 获取某一天文章列表
      *
      * @param dayOfToday
      */
     @Override
-    public void getContents(final Context context, final int dayOfToday) {
+    public void getContents(final Context context, final int dayOfToday, boolean refresh) {
         final ACache cache = ACache.get(context);
 
         final String before = DateUtil.getDateString(dayOfToday);
 
         //从Cache中获取了文章列表
         Contents contents;
-        if ((contents = readContentsFromCache(cache, before)) != null) {
+        if (!refresh && (contents = readContentsFromCache(cache, before)) != null) {
             EventBus.getDefault().post(new ContentsLoadedEvent(contents));
         } else {
             retrofit = new Retrofit.Builder().baseUrl(Constants.API_URL).addConverterFactory(GsonConverterFactory.create()).build();
@@ -89,15 +94,23 @@ public class ContentsProcessor implements IContentsProcessor {
         cache.put(dateString, contents, ACache.TIME_DAY * 14);
     }
 
-    /**
-     * 获取热门文章列表
-     */
     @Override
     public void getTopStories(Context context) {
+        getTopStories(context, false);
+    }
+
+    /**
+     * 获取热门文章列表
+     *
+     * @param context
+     * @param refresh 是否需要刷新
+     */
+    @Override
+    public void getTopStories(Context context, boolean refresh) {
         final ACache cache = ACache.get(context);
 
         Latest latest;
-        if ((latest = getLatestFromCache(cache)) != null) {
+        if (!refresh && (latest = getLatestFromCache(cache)) != null) {
             EventBus.getDefault().post(new TopStoriesLoadedEvent(latest));
         } else {
             retrofit = new Retrofit.Builder().baseUrl(Constants.API_URL).addConverterFactory(GsonConverterFactory.create()).build();

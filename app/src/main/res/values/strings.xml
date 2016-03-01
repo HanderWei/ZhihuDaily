@@ -10,4 +10,7 @@
     <string name="start_download">开始离线下载...</string>
     <string name="download_finish">已完成离线下载</string>
     <string name="download_failed">离线下载失败</string>
+    <string name="title_activity_about_me">AboutMeActivity</string>
+
+    <string name="about_me"></string>
 </resources>

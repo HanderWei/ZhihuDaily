@@ -40,9 +40,11 @@ public class MainPresenter {
      * @param dayOffToday 与今天的日期差
      */
     public void loadContents(int dayOffToday) {
-        //TODO
-        mMainActivity.refresh(true);
         mContentsProcessor.getContents(mContext, dayOffToday);
+    }
+
+    public void loadContents(int dayOffToday, boolean refresh) {
+        mContentsProcessor.getContents(mContext, dayOffToday, refresh);
     }
 
     /**
@@ -50,6 +52,10 @@ public class MainPresenter {
      */
     public void loadTopStories() {
         mContentsProcessor.getTopStories(mContext);
+    }
+
+    public void loadTopStories(boolean refresh) {
+        mContentsProcessor.getTopStories(mContext, refresh);
     }
 
     /**
@@ -67,7 +73,6 @@ public class MainPresenter {
      */
     public void onEvent(LoadFailureEvent event) {
         //TODO
-        mMainActivity.refresh(false);
     }
 
     /**
@@ -77,8 +82,6 @@ public class MainPresenter {
      */
     public void onEvent(ContentsLoadedEvent event) {
         mMainActivity.setContents(event.contents.getStories());
-        //TODO SwipeRefreshLayout 设置
-        mMainActivity.refresh(false);
     }
 
     /**

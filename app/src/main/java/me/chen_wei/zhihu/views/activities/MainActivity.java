@@ -2,6 +2,7 @@ package me.chen_wei.zhihu.views.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -70,7 +71,36 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
     }
 
     private void init() {
-        //TODO SwipeRefreshLayout 设置
+        mPresenter = new MainPresenter(getApplicationContext(), this);
+
+        //加载热门文章列表
+        mPresenter.loadTopStories();
+
+        //加载最新文章列表
+        mPresenter.loadContents(dayOfToday);
+
+
+        srl.setColorSchemeResources(R.color.colorAccent);
+        srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                srl.setRefreshing(true);
+
+                //刷新热门文章列表
+                mPresenter.loadTopStories(true);
+
+                //刷新当前文章列表
+                dayOfToday = 0;
+                mPresenter.loadContents(dayOfToday, true);
+
+                (new Handler()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        srl.setRefreshing(false);
+                    }
+                }, 1200);
+            }
+        });
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         mNewsList.setLayoutManager(linearLayoutManager);
@@ -84,14 +114,6 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
                 mPresenter.loadContents(dayOfToday);
             }
         });
-
-        mPresenter = new MainPresenter(getApplicationContext(), this);
-
-        //加载热门文章列表
-        mPresenter.loadTopStories();
-
-        //加载最新文章列表
-        mPresenter.loadContents(dayOfToday);
     }
 
     @Override
@@ -105,11 +127,6 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
         super.onDestroy();
 
         ButterKnife.unbind(this);
-    }
-
-    @Override
-    public void refresh(final boolean flag) {
-        //TODO
     }
 
     @Override
@@ -182,6 +199,9 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
                 mPresenter.offlineDownload();
                 return true;
             case R.id.action_about_me:
+                Intent intent = new Intent(this, AboutMeActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.hold, android.R.anim.fade_in);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

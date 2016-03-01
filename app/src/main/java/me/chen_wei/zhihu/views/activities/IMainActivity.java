@@ -12,9 +12,6 @@ import me.chen_wei.zhihu.network.model.Latest;
  */
 public interface IMainActivity {
 
-    //刷新SwipeRefreshLayout
-    void refresh(boolean flag);
-
     //设置文章列表
     void setContents(List<Contents.StoriesEntity> entities);
 
