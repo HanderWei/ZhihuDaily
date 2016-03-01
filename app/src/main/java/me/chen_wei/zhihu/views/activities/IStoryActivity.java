@@ -10,4 +10,5 @@ import me.chen_wei.zhihu.network.model.News;
 public interface IStoryActivity {
 
     void setNewsContent(News news);
+
 }

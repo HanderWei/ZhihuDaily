@@ -2,13 +2,14 @@ package me.chen_wei.zhihu.views.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader;
 import com.zanlabs.widget.infiniteviewpager.InfiniteViewPager;
@@ -29,10 +30,7 @@ import me.chen_wei.zhihu.views.adapter.TopStoriesAdapter;
 
 public class MainActivity extends AppCompatActivity implements IMainActivity {
 
-    private static final String TAG = "MainActivity";
     private static int dayOfToday = 0;
-    private int position = Integer.MAX_VALUE / 2;
-    private boolean isTouched = false;
 
     @Bind(R.id.tool_bar)
     Toolbar toolbar;
@@ -44,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
     RecyclerView mNewsList;
 
     @Bind(R.id.header)
-    RecyclerViewHeader header;
+    RecyclerViewHeader mNewsListHeader;
 
     @Bind(R.id.view_pager)
     InfiniteViewPager viewPager;
@@ -52,12 +50,11 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
     @Bind(R.id.indicator)
     LinePageIndicator indicator;
 
-    Latest latest;
+    private Latest latest;
 
     private MainPresenter mPresenter;
 
-    private List<Contents.StoriesEntity> mContents;
-
+    private List<Contents.StoriesEntity> mStories;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,26 +68,13 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
         init();
     }
 
-    private Handler mHandler = new Handler() {
-
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            viewPager.setCurrentItem(position);
-        }
-    };
-
     private void init() {
-        srl.setEnabled(true);
-        srl.setColorSchemeResources(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
+        //TODO SwipeRefreshLayout 设置
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         mNewsList.setLayoutManager(linearLayoutManager);
 
-        header.attachTo(mNewsList, true);
+        mNewsListHeader.attachTo(mNewsList, true);
 
         mNewsList.addOnScrollListener(new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
@@ -100,18 +84,18 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
             }
         });
 
-        mPresenter = new MainPresenter(this);
+        mPresenter = new MainPresenter(getApplicationContext(), this);
 
+        //加载热门文章列表
         mPresenter.loadTopStories();
 
-        //加载当天故事列表
+        //加载最新文章列表
         mPresenter.loadContents(dayOfToday);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        srl.setRefreshing(false);
         dayOfToday = 0;
     }
 
@@ -124,28 +108,23 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
 
     @Override
     public void refresh(final boolean flag) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                srl.setRefreshing(flag);
-            }
-        });
+        //TODO
     }
 
     @Override
     public void setContents(List<Contents.StoriesEntity> entities) {
         StoryListAdapter adapter = null;
-        if (null == mContents || mContents.size() == 0) {
-            mContents = entities;
-            adapter = new StoryListAdapter(mContents, this);
+        if (null == mStories || mStories.size() == 0) {
+            mStories = entities;
+            adapter = new StoryListAdapter(mStories, this);
             mNewsList.setAdapter(adapter);
         } else {
-            mContents.addAll(entities);
+            mStories.addAll(entities);
             if (adapter == null) {
-                adapter = new StoryListAdapter(mContents, this);
+                adapter = new StoryListAdapter(mStories, this);
             }
             int curSize = adapter.getItemCount();
-            adapter.notifyItemRangeChanged(curSize, mContents.size() - 1);
+            adapter.notifyItemRangeChanged(curSize, mStories.size() - 1);
         }
     }
 
@@ -168,5 +147,44 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
         viewPager.setAutoScrollTime(3000);
         viewPager.startAutoScroll();
         indicator.setViewPager(viewPager);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (viewPager != null) {
+            viewPager.startAutoScroll();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (viewPager != null) {
+            viewPager.stopAutoScroll();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_download:
+                return true;
+            case R.id.action_settings:
+                return true;
+            case R.id.action_day_night_theme:
+                return true;
+            case R.id.action_about_me:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

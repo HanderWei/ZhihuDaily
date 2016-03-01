@@ -1,5 +1,6 @@
 package me.chen_wei.zhihu.network.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -7,7 +8,7 @@ import java.util.List;
  * <p/>
  * Email : hander_wei@163.com
  */
-public class News {
+public class News implements Serializable {
 
     /**
      * body : <div class="main-wrap content-wrap">

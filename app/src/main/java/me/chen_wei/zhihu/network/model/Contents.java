@@ -1,5 +1,6 @@
 package me.chen_wei.zhihu.network.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -7,7 +8,7 @@ import java.util.List;
  * <p/>
  * Email : hander_wei@163.com
  */
-public class Contents {
+public class Contents implements Serializable{
 
 
     /**
@@ -42,7 +43,7 @@ public class Contents {
         return stories;
     }
 
-    public static class StoriesEntity {
+    public static class StoriesEntity implements Serializable{
         private int type;
         private int id;
         private String ga_prefix;

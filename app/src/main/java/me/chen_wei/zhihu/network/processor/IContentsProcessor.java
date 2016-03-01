@@ -1,5 +1,7 @@
 package me.chen_wei.zhihu.network.processor;
 
+import android.content.Context;
+
 /**
  * Created by Hander on 16/2/26.
  * <p/>
@@ -7,7 +9,18 @@ package me.chen_wei.zhihu.network.processor;
  */
 public interface IContentsProcessor {
 
-    void getContents(int dayOfToday);
+    /**
+     * 获取某一天的文章列表
+     *
+     * @param context
+     * @param dayOfToday
+     */
+    void getContents(Context context, int dayOfToday);
 
-    void getTopStories();
+    /**
+     * 获取热门文章列表
+     *
+     * @param context
+     */
+    void getTopStories(Context context);
 }

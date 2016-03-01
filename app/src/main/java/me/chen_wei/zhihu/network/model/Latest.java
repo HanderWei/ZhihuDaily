@@ -1,5 +1,6 @@
 package me.chen_wei.zhihu.network.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -7,7 +8,7 @@ import java.util.List;
  * <p/>
  * Email : hander_wei@163.com
  */
-public class Latest {
+public class Latest implements Serializable{
 
     /**
      * date : 20160226
@@ -59,7 +60,7 @@ public class Latest {
         return top_stories;
     }
 
-    public static class StoriesEntity {
+    public static class StoriesEntity implements Serializable{
         private int type;
         private int id;
         private String ga_prefix;
@@ -107,7 +108,7 @@ public class Latest {
         }
     }
 
-    public static class TopStoriesEntity {
+    public static class TopStoriesEntity implements Serializable{
         private String image;
         private int type;
         private int id;

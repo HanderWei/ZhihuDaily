@@ -2,4 +2,8 @@
     <string name="app_name">知乎日报</string>
     <string name="title_activity_main">首页</string>
     <string name="action_settings">设置</string>
+    <string name="action_share">分享</string>
+    <string name="action_download">离线下载</string>
+    <string name="action_day_night_theme">切换模式</string>
+    <string name="action_about_me">关于作者</string>
 </resources>

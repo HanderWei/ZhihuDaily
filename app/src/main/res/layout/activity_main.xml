@@ -19,7 +19,7 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/tool_bar">
 
-        <FrameLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -53,7 +53,7 @@
                     />
 
             </com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader>
-        </FrameLayout>
+        </RelativeLayout>
     </android.support.v4.widget.SwipeRefreshLayout>
 
 </RelativeLayout>

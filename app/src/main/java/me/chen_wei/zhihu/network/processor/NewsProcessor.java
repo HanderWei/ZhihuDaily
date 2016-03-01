@@ -1,7 +1,11 @@
 package me.chen_wei.zhihu.network.processor;
 
+import android.content.Context;
+import android.util.Log;
+
 import de.greenrobot.event.EventBus;
 import me.chen_wei.zhihu.Constants;
+import me.chen_wei.zhihu.cache.ACache;
 import me.chen_wei.zhihu.event.NewsLoadedEvent;
 import me.chen_wei.zhihu.network.api.ZhihuAPI;
 import me.chen_wei.zhihu.network.model.News;
@@ -20,22 +24,61 @@ public class NewsProcessor implements INewsProcessor {
 
     Retrofit retrofit;
 
+    /**
+     * 获取文章内容
+     *
+     * @param context
+     * @param id
+     */
     @Override
-    public void getNewsContent(int id) {
-        retrofit = new Retrofit.Builder().baseUrl(Constants.API_URL).addConverterFactory(GsonConverterFactory.create()).build();
+    public void getNewsContent(Context context, final int id) {
+        final ACache cache = ACache.get(context);
+        News news;
+        if ((news = getNewsFromCache(cache, id)) != null) {
+            EventBus.getDefault().post(new NewsLoadedEvent(news));
+            Log.e("Test", "news != null");
+        } else {
+            Log.e("Test", "mews == null");
+            retrofit = new Retrofit.Builder().baseUrl(Constants.API_URL).addConverterFactory(GsonConverterFactory.create()).build();
 
-        ZhihuAPI zhihuAPI = retrofit.create(ZhihuAPI.class);
-        Call<News> call = zhihuAPI.getNews(id);
-        call.enqueue(new Callback<News>() {
-            @Override
-            public void onResponse(Call<News> call, Response<News> response) {
-                EventBus.getDefault().post(new NewsLoadedEvent(response.body()));
-            }
+            ZhihuAPI zhihuAPI = retrofit.create(ZhihuAPI.class);
+            Call<News> call = zhihuAPI.getNews(id);
+            call.enqueue(new Callback<News>() {
+                @Override
+                public void onResponse(Call<News> call, Response<News> response) {
+                    EventBus.getDefault().post(new NewsLoadedEvent(response.body()));
 
-            @Override
-            public void onFailure(Call<News> call, Throwable t) {
+                    putNewsToCache(cache, id, response.body());
+                }
 
-            }
-        });
+                @Override
+                public void onFailure(Call<News> call, Throwable t) {
+                    //TODO
+                }
+            });
+        }
+    }
+
+    /**
+     * 从Cache中获取文章内容
+     *
+     * @param cache
+     * @param id
+     * @return
+     */
+    public News getNewsFromCache(ACache cache, int id) {
+        News news = (News) cache.getAsObject(Integer.toString(id));
+        return news;
+    }
+
+    /**
+     * 将文章内容保存到Cache中（保存两周）
+     *
+     * @param cache
+     * @param id
+     * @param news
+     */
+    public void putNewsToCache(ACache cache, int id, News news) {
+        cache.put(Integer.toString(id), news, ACache.TIME_DAY * 14);
     }
 }
