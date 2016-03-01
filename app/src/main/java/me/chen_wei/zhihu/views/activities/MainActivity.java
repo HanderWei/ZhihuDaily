@@ -90,7 +90,6 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
                 mPresenter.loadTopStories(true);
 
                 //刷新当前文章列表
-                dayOfToday = 0;
                 mPresenter.loadContents(dayOfToday, true);
 
                 (new Handler()).postDelayed(new Runnable() {
