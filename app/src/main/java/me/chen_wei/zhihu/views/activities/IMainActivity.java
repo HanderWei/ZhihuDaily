@@ -15,6 +15,9 @@ public interface IMainActivity {
     //设置文章列表
     void setContents(List<Contents.StoriesEntity> entities);
 
+    //设置最新文章列表
+    void setLatestContents(List<Contents.StoriesEntity> entities);
+
     //加载故事页面
     void gotoStoryActivity(int id);
 

@@ -6,12 +6,12 @@ import de.greenrobot.event.EventBus;
 import me.chen_wei.zhihu.Constants;
 import me.chen_wei.zhihu.cache.ACache;
 import me.chen_wei.zhihu.event.ContentsLoadedEvent;
+import me.chen_wei.zhihu.event.LatestContentsLoadedEvent;
 import me.chen_wei.zhihu.event.LoadFailureEvent;
 import me.chen_wei.zhihu.event.TopStoriesLoadedEvent;
 import me.chen_wei.zhihu.network.api.ZhihuAPI;
 import me.chen_wei.zhihu.network.model.Contents;
 import me.chen_wei.zhihu.network.model.Latest;
-import me.chen_wei.zhihu.util.DateUtil;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -28,37 +28,38 @@ public class ContentsProcessor implements IContentsProcessor {
     Retrofit retrofit;
 
     @Override
-    public void getContents(Context context, int dayOfToday) {
-        getContents(context, dayOfToday, false);
+    public void getContents(Context context, String dateStr) {
+        getLatestContents(context, dateStr, false);
     }
 
     /**
-     * 获取某一天文章列表
+     * 获取最新文章列表
      *
-     * @param dayOfToday
+     * @param dateStr
      */
     @Override
-    public void getContents(final Context context, final int dayOfToday, boolean refresh) {
+    public void getLatestContents(final Context context, final String dateStr, final boolean latest) {
         final ACache cache = ACache.get(context);
-
-        final String before = DateUtil.getDateString(dayOfToday);
 
         //从Cache中获取了文章列表
         Contents contents;
-        if (!refresh && (contents = readContentsFromCache(cache, before)) != null) {
+        if (!latest && (contents = readContentsFromCache(cache, dateStr)) != null) {
             EventBus.getDefault().post(new ContentsLoadedEvent(contents));
         } else {
             retrofit = new Retrofit.Builder().baseUrl(Constants.API_URL).addConverterFactory(GsonConverterFactory.create()).build();
 
             ZhihuAPI zhihuAPI = retrofit.create(ZhihuAPI.class);
-            Call<Contents> call = zhihuAPI.getContents(before);
+            Call<Contents> call = zhihuAPI.getContents(dateStr);
             call.enqueue(new Callback<Contents>() {
                 @Override
                 public void onResponse(Call<Contents> call, Response<Contents> response) {
                     //利用EventBus通知Presenter内容已经下载完成
-                    EventBus.getDefault().post(new ContentsLoadedEvent(response.body()));
-
-                    putContentsToCache(cache, before, response.body());
+                    if (latest) {
+                        EventBus.getDefault().post(new LatestContentsLoadedEvent(response.body()));
+                    } else {
+                        EventBus.getDefault().post(new ContentsLoadedEvent(response.body()));
+                    }
+                    putContentsToCache(cache, dateStr, response.body());
                 }
 
                 @Override

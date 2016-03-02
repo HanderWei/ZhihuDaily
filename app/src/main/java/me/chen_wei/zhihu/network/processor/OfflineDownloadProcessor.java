@@ -37,7 +37,7 @@ public class OfflineDownloadProcessor implements IOfflineDownloadProcessor {
 
     @Override
     public void downloadStories() {
-        String today = DateUtil.getDateString(0);
+        String today = DateUtil.getLatestDateString();
         ACache cache = ACache.get(mContext);
         Contents contents = (Contents) cache.getAsObject(today);
         List<Contents.StoriesEntity> stories = contents.getStories();

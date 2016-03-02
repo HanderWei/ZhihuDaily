@@ -38,7 +38,7 @@ public class AboutMeActivity extends AppCompatActivity {
             }
         });
 
-        String aboutMeHtml = "<html><head><title><h3>项目地址:<a href=\"https://github.com/HanderWei/ZhihuDaily\">https://github.com/HanderWei/ZhihuDaily</a>欢迎 <b><font color=\"#0288D1\">Star</b>, <b><font color=\"#0288D1\">Fork</b> , <b><font color=\"#0288D1\">Issue</b></h3></title></head><body><p><h4>本项目仅供学习，请勿用于其他用途。若被告侵权，本人会及时删除整个项目。</h4></p><p><h4>请您暸解相关情况，并遵守知乎协议。</h4></p><p><h4>Email:hander_wei@163.com</h4></p><p><h4>Github:<a href=\"https://github.com/HanderWei\">https://github.com/HanderWei</h4></p><p><h4>个人主页:<a href=\"http://chen-wei.me/\">http://chen-wei.me/</h4></p><<p><h4>中国科学技术大学研一在读，寻Android实习生工作，如有相关工作机会，欢迎与我联系！</h4></p><p><h4>祝好!</h3></p></body></html>";
+        String aboutMeHtml = "<html><head><title><h3>项目地址:<a href=\"https://github.com/HanderWei/ZhihuDaily\">https://github.com/HanderWei/ZhihuDaily</a>欢迎 <b><font color=\"#0288D1\">Star</b>, <b><font color=\"#0288D1\">Fork</b> , <b><font color=\"#0288D1\">Issue</b></h3></title></head><body><p><h4>本项目仅供学习，请勿用于其他用途。若被告侵权，本人会及时删除整个项目。</h4></p><p><h4>请您暸解相关情况，并遵守知乎协议。</h4></p><p><h4>Email:hander_wei@163.com</h4></p><p><h4>Github:<a href=\"https://github.com/HanderWei\">https://github.com/HanderWei</h4></p><p><h4>个人主页:<a href=\"http://chen-wei.me/\">http://chen-wei.me/</h4></p></body></html>";
 
         tvAboutMe.setText(Html.fromHtml(aboutMeHtml));
         tvAboutMe.setMovementMethod(LinkMovementMethod.getInstance());

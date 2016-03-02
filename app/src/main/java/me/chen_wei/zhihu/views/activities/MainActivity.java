@@ -17,6 +17,7 @@ import com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader;
 import com.zanlabs.widget.infiniteviewpager.InfiniteViewPager;
 import com.zanlabs.widget.infiniteviewpager.indicator.LinePageIndicator;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -32,8 +33,6 @@ import me.chen_wei.zhihu.views.adapter.StoryListAdapter;
 import me.chen_wei.zhihu.views.adapter.TopStoriesAdapter;
 
 public class MainActivity extends AppCompatActivity implements IMainActivity {
-
-    private static int dayOfToday = 0;
 
     @Bind(R.id.tool_bar)
     Toolbar toolbar;
@@ -59,6 +58,8 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
 
     private List<Contents.StoriesEntity> mStories;
 
+    private List<String> dateList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,11 +79,10 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
         mPresenter.loadTopStories();
 
         //加载最新文章列表
-        if (DateUtil.getHour() <= 7){//知乎日报7点之前不更新，所以7点以前最新列表应该加载之前一天的内容
-            dayOfToday--;
-        }
-        mPresenter.loadContents(dayOfToday);
-
+        String latestDate = DateUtil.getLatestDateString();
+        dateList = new ArrayList<>();
+        dateList.add(latestDate);
+        mPresenter.loadContents(latestDate);
 
         srl.setColorSchemeResources(R.color.colorAccent);
         srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -94,7 +94,12 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
                 mPresenter.loadTopStories(true);
 
                 //刷新当前文章列表
-                mPresenter.loadContents(dayOfToday, true);
+                String curLatestDate = DateUtil.getLatestDateString();
+                if (dateList != null) {
+                    dateList.removeAll(dateList);
+                    dateList.add(curLatestDate);
+                }
+                mPresenter.loadLatestContents(DateUtil.getLatestDateString(), true);
 
                 (new Handler()).postDelayed(new Runnable() {
                     @Override
@@ -113,8 +118,13 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
         mNewsList.addOnScrollListener(new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
-                dayOfToday--;
-                mPresenter.loadContents(dayOfToday);
+                String farthestDateStr;
+                if (dateList != null) {
+                    farthestDateStr = dateList.get(dateList.size() - 1);
+                    String beforeFarthestDateStr = DateUtil.getDayBeforeThisDayString(farthestDateStr);
+                    dateList.add(beforeFarthestDateStr);
+                    mPresenter.loadContents(beforeFarthestDateStr);
+                }
             }
         });
     }
@@ -122,7 +132,6 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        dayOfToday = 0;
     }
 
     @Override
@@ -148,6 +157,16 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
             adapter.notifyItemRangeChanged(curSize, mStories.size() - 1);
         }
     }
+
+    @Override
+    public void setLatestContents(List<Contents.StoriesEntity> entities) {
+        mStories = entities;
+        StoryListAdapter adapter = new StoryListAdapter(mStories, this);
+        mNewsList.setAdapter(adapter);
+
+        adapter.notifyItemRangeChanged(0, mStories.size() - 1);
+    }
+
 
     @Override
     public void gotoStoryActivity(int id) {

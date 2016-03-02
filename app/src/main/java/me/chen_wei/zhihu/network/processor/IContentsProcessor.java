@@ -13,18 +13,18 @@ public interface IContentsProcessor {
      * 获取某一天的文章列表
      *
      * @param context
-     * @param dayOfToday
+     * @param dateStr
      */
-    void getContents(Context context, int dayOfToday);
+    void getContents(Context context, String dateStr);
 
     /**
-     * 获取某一天的文章列表
+     * 获取最新文章列表
      *
      * @param context
-     * @param dayOfToday
-     * @param refresh    是否要刷新
+     * @param dateStr
+     * @param latest
      */
-    void getContents(Context context, int dayOfToday, boolean refresh);
+    void getLatestContents(Context context, String dateStr, boolean latest);
 
     /**
      * 获取热门文章列表

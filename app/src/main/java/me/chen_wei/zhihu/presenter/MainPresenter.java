@@ -7,6 +7,7 @@ import de.greenrobot.event.EventBus;
 import me.chen_wei.zhihu.R;
 import me.chen_wei.zhihu.event.AllStoriedDownloadedEvent;
 import me.chen_wei.zhihu.event.ContentsLoadedEvent;
+import me.chen_wei.zhihu.event.LatestContentsLoadedEvent;
 import me.chen_wei.zhihu.event.LoadContentEvent;
 import me.chen_wei.zhihu.event.LoadFailureEvent;
 import me.chen_wei.zhihu.event.TopStoriesLoadedEvent;
@@ -37,14 +38,14 @@ public class MainPresenter {
     /**
      * 加载文章列表
      *
-     * @param dayOffToday 与今天的日期差
+     * @param dateStr
      */
-    public void loadContents(int dayOffToday) {
-        mContentsProcessor.getContents(mContext, dayOffToday);
+    public void loadContents(String dateStr) {
+        mContentsProcessor.getContents(mContext, dateStr);
     }
 
-    public void loadContents(int dayOffToday, boolean refresh) {
-        mContentsProcessor.getContents(mContext, dayOffToday, refresh);
+    public void loadLatestContents(String dateStr, boolean refresh) {
+        mContentsProcessor.getLatestContents(mContext, dateStr, refresh);
     }
 
     /**
@@ -82,6 +83,10 @@ public class MainPresenter {
      */
     public void onEvent(ContentsLoadedEvent event) {
         mMainActivity.setContents(event.contents.getStories());
+    }
+
+    public void onEvent(LatestContentsLoadedEvent event) {
+        mMainActivity.setLatestContents(event.contents.getStories());
     }
 
     /**
