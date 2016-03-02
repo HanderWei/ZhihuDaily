@@ -25,4 +25,9 @@ public class DateUtil {
         Date date = calendar.getTime();
         return sdf.format(date);
     }
+
+    public static int getHour(){
+        Calendar calendar = Calendar.getInstance();
+        return calendar.get(Calendar.HOUR_OF_DAY);
+    }
 }

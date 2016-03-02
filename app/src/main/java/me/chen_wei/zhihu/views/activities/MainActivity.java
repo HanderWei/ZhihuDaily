@@ -26,6 +26,7 @@ import me.chen_wei.zhihu.R;
 import me.chen_wei.zhihu.network.model.Contents;
 import me.chen_wei.zhihu.network.model.Latest;
 import me.chen_wei.zhihu.presenter.MainPresenter;
+import me.chen_wei.zhihu.util.DateUtil;
 import me.chen_wei.zhihu.views.EndlessRecyclerViewScrollListener;
 import me.chen_wei.zhihu.views.adapter.StoryListAdapter;
 import me.chen_wei.zhihu.views.adapter.TopStoriesAdapter;
@@ -77,6 +78,9 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
         mPresenter.loadTopStories();
 
         //加载最新文章列表
+        if (DateUtil.getHour() <= 7){//知乎日报7点之前不更新，所以7点以前最新列表应该加载之前一天的内容
+            dayOfToday--;
+        }
         mPresenter.loadContents(dayOfToday);
 
 
