@@ -5,6 +5,8 @@
  ***项目仅供学习使用，请遵循知乎相关规定。如有侵权，告知后必定第一时间删除该项目。***
 
 ## 界面效果
+***界面与官方风格相似度极高，遵循Material Design规范***
+
 | UI | 非官方 | 官方 |
 |----|-------|------|
 |主界面|![非官方主界面](/img/mine_2.jpg)|![官方主界面](/img/off_2.jpg)|
@@ -12,6 +14,8 @@
 
 ## 与官方知乎日报有哪些区别?
 * 没有烦人的推送
+* 权限极少(准确的说只有`INTERNET`权限)
+* 不会常驻内存
 * 体积更小(2MB<5.3MB)
 * 给你最纯粹的阅读享受
 * ... ...
@@ -50,13 +54,15 @@
 * Email: [hander_wei@163.com](hander_wei@163.com)
 * Github: [https://github.com/HanderWei](https://github.com/HanderWei)
 * 中国科学技术大学软件工程研究生在读
+	
+***现寻Android实习工作一份，如有相关工作机会，欢迎与我联系！***
+
 
 ## License
-The MIT License (MIT)
-Copyright (c) 2016 Chen Wei
+	The MIT License (MIT) Copyright (c) 2016 Chen Wei
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+	Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+	The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
