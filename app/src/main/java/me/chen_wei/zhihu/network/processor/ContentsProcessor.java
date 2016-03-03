@@ -12,6 +12,7 @@ import me.chen_wei.zhihu.event.TopStoriesLoadedEvent;
 import me.chen_wei.zhihu.network.api.ZhihuAPI;
 import me.chen_wei.zhihu.network.model.Contents;
 import me.chen_wei.zhihu.network.model.Latest;
+import me.chen_wei.zhihu.util.NetworkUtil;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -28,24 +29,14 @@ public class ContentsProcessor implements IContentsProcessor {
     Retrofit retrofit;
 
     @Override
-    public void getContents(Context context, String dateStr) {
-        getLatestContents(context, dateStr, false);
-    }
-
-    /**
-     * 获取最新文章列表
-     *
-     * @param dateStr
-     */
-    @Override
-    public void getLatestContents(final Context context, final String dateStr, final boolean latest) {
+    public void getContents(final Context context, final String dateStr) {
         final ACache cache = ACache.get(context);
-
-        //从Cache中获取了文章列表
         Contents contents;
-        if (!latest && (contents = readContentsFromCache(cache, dateStr)) != null) {
+        if (!NetworkUtil.isConnected(context)) {
+            contents = readContentsFromCache(cache, dateStr);
             EventBus.getDefault().post(new ContentsLoadedEvent(contents));
         } else {
+            //从Cache中获取了文章列表
             retrofit = new Retrofit.Builder().baseUrl(Constants.API_URL).addConverterFactory(GsonConverterFactory.create()).build();
 
             ZhihuAPI zhihuAPI = retrofit.create(ZhihuAPI.class);
@@ -54,11 +45,7 @@ public class ContentsProcessor implements IContentsProcessor {
                 @Override
                 public void onResponse(Call<Contents> call, Response<Contents> response) {
                     //利用EventBus通知Presenter内容已经下载完成
-                    if (latest) {
-                        EventBus.getDefault().post(new LatestContentsLoadedEvent(response.body()));
-                    } else {
-                        EventBus.getDefault().post(new ContentsLoadedEvent(response.body()));
-                    }
+                    EventBus.getDefault().post(new ContentsLoadedEvent(response.body()));
                     putContentsToCache(cache, dateStr, response.body());
                 }
 
@@ -69,6 +56,38 @@ public class ContentsProcessor implements IContentsProcessor {
                 }
             });
         }
+
+    }
+
+    /**
+     * 获取最新文章列表
+     *
+     * @param dateStr
+     */
+    @Override
+    public void getLatestContents(final Context context, final String dateStr) {
+        final ACache cache = ACache.get(context);
+
+        //从Cache中获取了文章列表
+        retrofit = new Retrofit.Builder().baseUrl(Constants.API_URL).addConverterFactory(GsonConverterFactory.create()).build();
+
+        ZhihuAPI zhihuAPI = retrofit.create(ZhihuAPI.class);
+        Call<Contents> call = zhihuAPI.getContents(dateStr);
+        call.enqueue(new Callback<Contents>() {
+            @Override
+            public void onResponse(Call<Contents> call, Response<Contents> response) {
+                //利用EventBus通知Presenter内容已经下载完成
+                EventBus.getDefault().post(new LatestContentsLoadedEvent(response.body()));
+
+                putContentsToCache(cache, dateStr, response.body());
+            }
+
+            @Override
+            public void onFailure(Call<Contents> call, Throwable t) {
+                //利用EventBus通知Presenter加载失败
+                EventBus.getDefault().post(new LoadFailureEvent("文章列表加载失败"));
+            }
+        });
 
     }
 

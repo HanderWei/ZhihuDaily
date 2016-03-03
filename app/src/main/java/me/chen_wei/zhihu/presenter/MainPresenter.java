@@ -44,8 +44,8 @@ public class MainPresenter {
         mContentsProcessor.getContents(mContext, dateStr);
     }
 
-    public void loadLatestContents(String dateStr, boolean refresh) {
-        mContentsProcessor.getLatestContents(mContext, dateStr, refresh);
+    public void loadLatestContents(String dateStr) {
+        mContentsProcessor.getLatestContents(mContext, dateStr);
     }
 
     /**

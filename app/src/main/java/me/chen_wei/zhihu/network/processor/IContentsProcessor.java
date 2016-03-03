@@ -22,9 +22,8 @@ public interface IContentsProcessor {
      *
      * @param context
      * @param dateStr
-     * @param latest
      */
-    void getLatestContents(Context context, String dateStr, boolean latest);
+    void getLatestContents(Context context, String dateStr);
 
     /**
      * 获取热门文章列表

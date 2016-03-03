@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
         mPresenter.loadContents(latestDate);
 
         srl.setColorSchemeResources(R.color.colorAccent);
+        //下拉刷新
         srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -99,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
                     dateList.removeAll(dateList);
                     dateList.add(curLatestDate);
                 }
-                mPresenter.loadLatestContents(DateUtil.getLatestDateString(), true);
+                mPresenter.loadLatestContents(DateUtil.getLatestDateString());
 
                 (new Handler()).postDelayed(new Runnable() {
                     @Override
@@ -166,7 +167,6 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
 
         adapter.notifyItemRangeChanged(0, mStories.size() - 1);
     }
-
 
     @Override
     public void gotoStoryActivity(int id) {
