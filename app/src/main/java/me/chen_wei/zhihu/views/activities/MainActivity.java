@@ -52,8 +52,6 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
     @Bind(R.id.indicator)
     LinePageIndicator indicator;
 
-    private Latest latest;
-
     private MainPresenter mPresenter;
 
     private List<Contents.StoriesEntity> mStories;
@@ -120,12 +118,10 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
                 String farthestDateStr;
-                if (dateList != null) {
-                    farthestDateStr = dateList.get(dateList.size() - 1);
-                    String beforeFarthestDateStr = DateUtil.getDayBeforeThisDayString(farthestDateStr);
-                    dateList.add(beforeFarthestDateStr);
-                    mPresenter.loadContents(beforeFarthestDateStr);
-                }
+                farthestDateStr = dateList.get(dateList.size() - 1);
+                String beforeFarthestDateStr = DateUtil.getDayBeforeThisDayString(farthestDateStr);
+                dateList.add(beforeFarthestDateStr);
+                mPresenter.loadContents(beforeFarthestDateStr);
             }
         });
     }
@@ -178,8 +174,6 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
 
     @Override
     public void setTopStories(Latest latest) {
-        this.latest = latest;
-
         //设置ViewPager
         TopStoriesAdapter adapter = new TopStoriesAdapter(this);
         adapter.setDataList(latest.getTop_stories());
