@@ -30,13 +30,13 @@
 * `RecyclerView`的常规使用方法（下拉刷新，Endless Scrolling...）
 * `ViewPager`滚动效果
 * `WebView`加载HTML、CSS文件
+* `DayNight Theme`切换
 * ... ...
 
 **本项目适合对Android基础知识有一定了解但未做过项目的同学进行阅读**
 
 
 ## 后续将会增加的功能
-* `DayNight Theme`切换
 * `主题日报`
 * 日报内容根据日期进行分组
 * 监听网络状态
