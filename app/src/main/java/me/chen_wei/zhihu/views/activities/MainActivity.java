@@ -1,10 +1,12 @@
 package me.chen_wei.zhihu.views.activities;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -213,6 +215,22 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
                 //离线下载
                 Toast.makeText(getApplicationContext(), R.string.start_download, Toast.LENGTH_LONG).show();
                 mPresenter.offlineDownload();
+                return true;
+            case R.id.action_day_night:
+                int currentNightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+                switch (currentNightMode){
+                    case Configuration.UI_MODE_NIGHT_NO:
+                        getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                        recreate();
+                        break;
+                    case Configuration.UI_MODE_NIGHT_YES:
+                        getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                        recreate();
+                        break;
+                    case Configuration.UI_MODE_NIGHT_UNDEFINED:
+                        getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_AUTO);
+                        break;
+                }
                 return true;
             case R.id.action_about_me:
                 Intent intent = new Intent(this, AboutMeActivity.class);
