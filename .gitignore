@@ -37,3 +37,7 @@ captures/*.iml
 .DS_Store
 /build
 /captures
+
+.idea/
+
+*.iml
